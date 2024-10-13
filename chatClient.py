@@ -67,7 +67,7 @@ class ChatClient:
                     error_code, error_message = params
                     print(f"\nError {error_code}: {error_message}")
 
-                print("\nComando (m/b/q): ", end="", flush=True)
+                print("> ", end="", flush=True)
 
             except Exception as e:
                 print(f"Error al recibir mensaje: {e}")
@@ -75,33 +75,34 @@ class ChatClient:
 
     def run_interface(self):
         print("Bienvenido al cliente de chat")
-        print("Comandos disponibles:")
-        print("m: Enviar mensaje privado")
-        print("b: Enviar mensaje broadcast")
-        print("q: Salir")
+        print("Instrucciones:")
+        print("- Escriba su mensaje y presione Enter para enviar un mensaje a todos")
+        print("- Use @usuario <mensaje> para enviar un mensaje privado")
+        print("- Escriba /logout para salir")
 
         while self.running:
             try:
-                command = input("\nComando (m/b/q): ").strip().lower()
-
-                if command == 'm':
-                    recipient = input("Destinatario: ").strip()
-                    content = input("Mensaje: ").strip()
-                    self.send_message(recipient, content)
-                elif command == 'b':
-                    content = input("Mensaje de broadcast: ").strip()
-                    self.broadcast_message(content)
-                elif command == 'q':
+                message = input("\n> ").strip()
+                
+                if message.lower() == "/logout":
                     self.disconnect()
                     break
+                elif message.startswith("@"):
+                    parts = message.split(maxsplit=1)
+                    if len(parts) == 2:
+                        recipient = parts[0][1:]  # Remove the @ symbol
+                        content = parts[1]
+                        self.send_message(recipient, content)
+                    else:
+                        print("Formato incorrecto. Use @usuario <mensaje>")
                 else:
-                    print("Comando no reconocido. Use m, b o q.")
+                    self.broadcast_message(message)
             except KeyboardInterrupt:
                 self.disconnect()
                 break
 
 if __name__ == "__main__":
-    HOST = 'ec2-54-80-40-0.compute-1.amazonaws.com'
+    HOST = 'localhost'
     PORT = 8080
 
     print("Bienvenido al cliente de chat")
