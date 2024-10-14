@@ -118,11 +118,12 @@ Ejemplo: `ERROR|404|Usuario no encontrado`
 
 ### 3.3. Flujo de comunicación
 #### 3.3.1. Conexión
-```flow
-    Cliente -->|CONNECT| Servidor
-    Servidor -->|CONNECT_ACK|OK| Cliente
-    Servidor -->|CONNECT_ACK|FAIL| Cliente
-    Servidor -->|USER_LIST|user1,user2,...| Cliente
+``` mermaid
+sequenceDiagram
+    Cliente->>Servidor: CONNECT|username
+    Servidor-->>Cliente: CONNECT_ACK|OK
+    Servidor-->>Cliente: CONNECT_ACK|FAIL
+    Servidor-->>Cliente: USER_LIST|user1,user2,...
 
 ```
 
@@ -132,15 +133,53 @@ Ejemplo: `ERROR|404|Usuario no encontrado`
 
 #### 3.3.2. Envío de Mensaje Privado
 
+``` mermaid
+sequenceDiagram
+    participant Cliente
+    participant Servidor
+    participant Destinatario
+
+    Cliente->>Servidor: MESSAGE|recipient|content
+    Servidor->>Destinatario: MESSAGE|sender|content
+
+```
+
 1.  Cliente envía: `MESSAGE|recipient|content`
 2.  Servidor reenvía al destinatario: `MESSAGE|sender|content`
 
 #### 3.3.3. Envío de Broadcast
+``` mermaid
+sequenceDiagram
+    participant Cliente
+    participant Servidor
+    participant Cliente1
+    participant Cliente2
+    participant Cliente3
+
+    Cliente->>Servidor: BROADCAST|content
+    Servidor->>Cliente1: BROADCAST|sender|content
+    Servidor->>Cliente2: BROADCAST|sender|content
+    Servidor->>Cliente3: BROADCAST|sender|content
+
+```
 
 1.  Cliente envía: `BROADCAST|content`
 2.  Servidor reenvía a todos los clientes: `BROADCAST|sender|content`
 
 #### 3.3.4. Desconexión
+``` mermaid
+sequenceDiagram
+    participant Cliente
+    participant Servidor
+    participant Cliente1
+    participant Cliente2
+
+    Cliente->>Servidor: DISCONNECT
+    Servidor-->>Cliente: Cierra conexión
+    Servidor->>Cliente1: USER_LIST|updated_list
+    Servidor->>Cliente2: USER_LIST|updated_list
+
+```
 
 1.  Cliente envía: `DISCONNECT`
 2.  Servidor cierra la conexión y envía una `USER_LIST` actualizada a los demás clientes
