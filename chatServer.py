@@ -29,10 +29,11 @@ class ChatServer:
                 command, *params = MyChatProtocol.decode_message(message)
                 
                 if command == "CONNECT":
-                    username = params[0]
-                    if username in self.clients:
+                    tempusername = params[0]
+                    if tempusername in self.clients:
                         MyChatProtocol.send_message(client_socket, MyChatProtocol.create_connect_ack("FAIL"))
                     else:
+                        username = tempusername
                         self.clients[username] = client_socket
                         MyChatProtocol.send_message(client_socket, MyChatProtocol.create_connect_ack("OK"))
                         self.broadcast_user_list()
@@ -53,7 +54,7 @@ class ChatServer:
                 print(f"Error: {e}")
                 break
 
-        if username:
+        if username != None:
             del self.clients[username]
             self.broadcast_user_list()
         client_socket.close()
