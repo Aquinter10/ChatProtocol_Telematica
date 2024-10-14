@@ -1,5 +1,3 @@
-import socket
-
 class MyChatProtocol:
     ENCODING = 'utf-8'
     MAX_MESSAGE_SIZE = 1024
