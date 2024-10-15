@@ -50,6 +50,7 @@ class ChatClient:
             command, status = MyChatProtocol.decode_message(response)
             if command == "CONNECT_ACK" and status == "OK":
                 self.add_message("Conectado exitosamente")
+                self.window.title(f"Chat Cliente: Conectado como {self.username}")
                 self.running = True
                 threading.Thread(target=self.receive_messages, daemon=True).start()
                 return True
