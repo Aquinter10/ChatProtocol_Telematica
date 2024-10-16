@@ -74,6 +74,12 @@ class ChatClient:
             self.client_socket.close()
             print("Desconectado del servidor")
 
+    def send_message(self, recipient, content):
+        MyChatProtocol.send_message(self.client_socket, MyChatProtocol.create_message(recipient, content))
+
+    def broadcast_message(self, content):
+        MyChatProtocol.send_message(self.client_socket, MyChatProtocol.create_broadcast_message(content))
+
     def receive_messages(self):
         while self.running:
             try:
