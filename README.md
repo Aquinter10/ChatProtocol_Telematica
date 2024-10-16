@@ -1,11 +1,12 @@
 # myChatProtocol [ Proyecto de Telemática ]
 
 Indice
-- Introducción
-- Desarrollo
-- Aspectos Logrados y no Logrados
-- Conclusiones
-- Referencias
+- 1. Introducción
+- 2. Desarrollo
+- 3. Especificacion del protocolo
+- 4. Aspectos Logrados y no Logrados
+- 6. Conclusiones
+- 6. Referencias
 
 
 ## Introducción
